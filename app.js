@@ -21,8 +21,8 @@ app.use(cors({credentials: true, origin: true}));
 
 io.on('connection', (socket) => {
   socket.on('sendMessage', message => {
-    if(message?.userId && message?.username && message?.message) {
-      const roomId = message?.room || '0000';
+    if('userId' in message && 'username' in message && 'message' in message) {
+      const roomId = 'room' in message ? message.room : '0000';
       Room.findOne({roomId: roomId}, (err, room) =>  {
         if(err || !room) {
           socket.emit('error', 'Nie znaleziono pokoju');
